@@ -1,19 +1,18 @@
 package com.pnt2005.bank.model.dto.account;
-import com.pnt2005.bank.enums.AccountStatus;
 import com.pnt2005.bank.enums.AccountType;
-import com.pnt2005.bank.model.entity.TransactionEntity;
 import com.pnt2005.bank.model.entity.UserEntity;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 public class AccountRequestDTO {
-    private BigDecimal balance;
-    private AccountStatus status;
-    private AccountType type;
-    private UserEntity user;
-    private List<TransactionEntity> outgoingTransactionEntityList = new ArrayList<TransactionEntity>();
-    private List<TransactionEntity> incomingTransactionEntityList = new ArrayList<TransactionEntity>();
+    @NotNull(message = "Account type is required")
+    private AccountType accountType;
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
 }

@@ -12,8 +12,63 @@ public class AccountResponseDTO {
     private BigDecimal balance;
     private AccountStatus status;
     private AccountType type;
-    private UserEntity user;
+    private String username;
     private List<TransactionEntity> outgoingTransactionEntityList = new ArrayList<TransactionEntity>();
     private List<TransactionEntity> incomingTransactionEntityList = new ArrayList<TransactionEntity>();
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public AccountStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AccountStatus status) {
+        this.status = status;
+    }
+
+    public AccountType getType() {
+        return type;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public List<TransactionEntity> getOutgoingTransactionEntityList() {
+        return outgoingTransactionEntityList;
+    }
+
+    public void setOutgoingTransactionEntityList(List<TransactionEntity> outgoingTransactionEntityList) {
+        this.outgoingTransactionEntityList = outgoingTransactionEntityList;
+    }
+
+    public List<TransactionEntity> getIncomingTransactionEntityList() {
+        return incomingTransactionEntityList;
+    }
+
+    public void setIncomingTransactionEntityList(List<TransactionEntity> incomingTransactionEntityList) {
+        this.incomingTransactionEntityList = incomingTransactionEntityList;
+    }
 }
