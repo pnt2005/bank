@@ -1,6 +1,7 @@
 package com.pnt2005.bank.model.dto.user;
 
 import com.pnt2005.bank.enums.UserRole;
+import com.pnt2005.bank.model.dto.account.AccountResponseDTO;
 import com.pnt2005.bank.model.entity.AccountEntity;
 
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ public class UserResponseDTO {
     private String username;
     private String email;
     private UserRole role;
-    private List<AccountEntity> accountEntityList = new ArrayList<AccountEntity>();
 
     public Long getId() {
         return id;
@@ -43,13 +43,5 @@ public class UserResponseDTO {
 
     public void setRole(UserRole role) {
         this.role = role;
-    }
-
-    public List<AccountEntity> getAccountEntityList() {
-        return accountEntityList;
-    }
-
-    public void setAccountEntityList(List<AccountEntity> accountEntityList) {
-        this.accountEntityList = accountEntityList;
     }
 }

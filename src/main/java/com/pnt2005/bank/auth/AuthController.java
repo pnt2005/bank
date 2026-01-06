@@ -52,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> createReader(@Valid @RequestBody UserRequestDTO readerRequestDTO) {
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO readerRequestDTO) {
         UserResponseDTO readerResponseDTO = userService.createUser(readerRequestDTO);
         URI location = URI.create("/readers/" + readerResponseDTO.getId());
         return ResponseEntity.created(location).body(readerResponseDTO);

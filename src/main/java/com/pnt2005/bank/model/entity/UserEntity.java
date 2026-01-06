@@ -21,6 +21,11 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<AccountEntity> accountEntityList = new ArrayList<AccountEntity>();
 
+    public void addAccount(AccountEntity accountEntity) {
+        accountEntityList.add(accountEntity);
+        accountEntity.setUser(this);
+    }
+
     public Long getId() {
         return id;
     }

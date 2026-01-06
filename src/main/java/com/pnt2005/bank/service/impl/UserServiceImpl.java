@@ -1,12 +1,13 @@
 package com.pnt2005.bank.service.impl;
 import com.pnt2005.bank.converter.UserConverter;
 import com.pnt2005.bank.enums.UserRole;
+import com.pnt2005.bank.exception.ResourceNotFoundException;
 import com.pnt2005.bank.model.dto.user.UserRequestDTO;
 import com.pnt2005.bank.model.dto.user.UserResponseDTO;
+import com.pnt2005.bank.model.entity.AccountEntity;
 import com.pnt2005.bank.model.entity.UserEntity;
 import com.pnt2005.bank.repository.UserRepository;
 import com.pnt2005.bank.service.UserService;
-import com.pnt2005.bank.service.Util;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -16,16 +17,13 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
-    private final Util util;
     private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository,
                            UserConverter userConverter,
-                           Util util,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
-        this.util = util;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -41,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO getUserById(Long id) {
-        UserEntity userEntity = util.findUserById(id);
+        UserEntity userEntity = getUserEntityById(id);
         return userConverter.toUserDTO(userEntity);
     }
 
@@ -55,7 +53,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-        UserEntity userEntity = util.findUserById(id);
+        UserEntity userEntity = getUserEntityById(id);
         userRepository.delete(userEntity);
+    }
+
+    @Override
+    public void addAccount(UserEntity userEntity, AccountEntity accountEntity) {
+        userEntity.addAccount(accountEntity);
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public UserEntity getUserEntityById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found"));
     }
 }
