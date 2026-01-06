@@ -73,4 +73,11 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Account with id " + id + " not found"));
     }
+
+    @Override
+    public AccountResponseDTO changeStatus(Long id, String accountStatus) {
+        AccountEntity accountEntity = getAccountEntityById(id);
+        accountEntity.setStatus(AccountStatus.valueOf(accountStatus));
+        return accountConverter.toAccountDTO(accountRepository.save(accountEntity));
+    }
 }

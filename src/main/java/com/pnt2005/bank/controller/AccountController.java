@@ -1,6 +1,7 @@
 package com.pnt2005.bank.controller;
 
 import com.pnt2005.bank.auth.CustomUserDetails;
+import com.pnt2005.bank.enums.AccountStatus;
 import com.pnt2005.bank.model.dto.account.AccountRequestDTO;
 import com.pnt2005.bank.model.dto.account.AccountResponseDTO;
 import com.pnt2005.bank.model.entity.UserEntity;
@@ -53,5 +54,12 @@ public class AccountController {
     public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/change-status")
+    public ResponseEntity<AccountResponseDTO> changeStatus(@PathVariable Long id,
+                                                           @Valid @RequestBody Map<String, String> requestBody) {
+        AccountResponseDTO accountResponseDTO = accountService.changeStatus(id, requestBody.get("accountStatus"));
+        return ResponseEntity.ok(accountResponseDTO);
     }
 }

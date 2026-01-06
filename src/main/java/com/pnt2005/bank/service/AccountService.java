@@ -1,5 +1,6 @@
 package com.pnt2005.bank.service;
 
+import com.pnt2005.bank.enums.AccountStatus;
 import com.pnt2005.bank.model.dto.account.AccountRequestDTO;
 import com.pnt2005.bank.model.dto.account.AccountResponseDTO;
 import com.pnt2005.bank.model.entity.AccountEntity;
@@ -14,4 +15,5 @@ public interface AccountService {
     AccountResponseDTO createAccount(AccountRequestDTO accountRequestDTO, Long id);
     void deleteAccount(Long id);
     AccountEntity getAccountEntityById(Long id);
+    AccountResponseDTO changeStatus(Long id, String accountStatus);
 }
