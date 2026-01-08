@@ -24,11 +24,19 @@ public class AccountEntity {
     @ManyToOne
     private UserEntity user;
 
-    @OneToMany(mappedBy = "fromAccount")
+    @OneToMany(mappedBy = "fromAccountEntity")
     private List<TransactionEntity> outgoingTransactionEntityList = new ArrayList<TransactionEntity>();
 
-    @OneToMany(mappedBy = "toAccount")
+    @OneToMany(mappedBy = "toAccountEntity")
     private List<TransactionEntity> incomingTransactionEntityList = new ArrayList<TransactionEntity>();
+
+    public void addOutgoingTransactionEntityList(TransactionEntity transactionEntity) {
+        outgoingTransactionEntityList.add(transactionEntity);
+    }
+
+    public void addIncomingTransactionEntityList(TransactionEntity transactionEntity) {
+        incomingTransactionEntityList.add(transactionEntity);
+    }
 
     public Long getId() {
         return id;
