@@ -1,6 +1,5 @@
 package com.pnt2005.bank.model.entity;
 import com.pnt2005.bank.enums.TransactionStatus;
-import com.pnt2005.bank.enums.TransactionType;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,20 +13,17 @@ public class TransactionEntity {
 
     @ManyToOne
     @JoinColumn(name = "from_account")
-    private AccountEntity fromAccount;
+    private AccountEntity fromAccountEntity;
 
     @ManyToOne
     @JoinColumn(name = "to_account")
-    private AccountEntity toAccount;
+    private AccountEntity toAccountEntity;
 
     private BigDecimal amount;
     private LocalDateTime created_at;
 
     @Enumerated(EnumType.STRING)
-    private TransactionType type;
-
-    @Enumerated(EnumType.STRING)
-    private TransactionStatus status;
+    private TransactionStatus transactionStatus;
 
     public Long getId() {
         return id;
@@ -37,20 +33,20 @@ public class TransactionEntity {
         this.id = id;
     }
 
-    public AccountEntity getFromAccount() {
-        return fromAccount;
+    public AccountEntity getFromAccountEntity() {
+        return fromAccountEntity;
     }
 
-    public void setFromAccount(AccountEntity fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setFromAccountEntity(AccountEntity fromAccountEntity) {
+        this.fromAccountEntity = fromAccountEntity;
     }
 
-    public AccountEntity getToAccount() {
-        return toAccount;
+    public AccountEntity getToAccountEntity() {
+        return toAccountEntity;
     }
 
-    public void setToAccount(AccountEntity toAccount) {
-        this.toAccount = toAccount;
+    public void setToAccountEntity(AccountEntity toAccountEntity) {
+        this.toAccountEntity = toAccountEntity;
     }
 
     public BigDecimal getAmount() {
@@ -69,19 +65,11 @@ public class TransactionEntity {
         this.created_at = created_at;
     }
 
-    public TransactionType getType() {
-        return type;
+    public TransactionStatus getTransactionStatus() {
+        return transactionStatus;
     }
 
-    public void setType(TransactionType type) {
-        this.type = type;
-    }
-
-    public TransactionStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TransactionStatus status) {
-        this.status = status;
+    public void setTransactionStatus(TransactionStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
     }
 }
