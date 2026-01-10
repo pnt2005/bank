@@ -1,6 +1,7 @@
 package com.pnt2005.bank.service.impl;
 
 import com.pnt2005.bank.converter.TransactionConverter;
+import com.pnt2005.bank.enums.AccountStatus;
 import com.pnt2005.bank.enums.TransactionStatus;
 import com.pnt2005.bank.exception.TransactionException;
 import com.pnt2005.bank.model.dto.transaction.TransactionRequestDTO;
@@ -48,6 +49,12 @@ public class TransactionServiceImpl implements TransactionService {
         AccountEntity fromAccountEntity = accountRepository.findByIdForUpdate(transactionRequestDTO.getFromAccountId());
         AccountEntity toAccountEntity = accountRepository.findByIdForUpdate(transactionRequestDTO.getToAccountId());
         //validate
+        if (!fromAccountEntity.getStatus().equals(AccountStatus.ACTIVE)) {
+            throw new TransactionException("from account is not active");
+        }
+        if (!toAccountEntity.getStatus().equals(AccountStatus.ACTIVE)) {
+            throw new TransactionException("to account is not active");
+        }
         if (fromAccountEntity.getBalance().compareTo(transactionRequestDTO.getAmount()) < 0) {
             throw new TransactionException("amount > balance");
         }
