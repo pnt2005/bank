@@ -1,5 +1,6 @@
 package com.pnt2005.bank.service.impl;
 
+import com.pnt2005.bank.annotation.LogExecutionTime;
 import com.pnt2005.bank.converter.AccountConverter;
 import com.pnt2005.bank.enums.AccountStatus;
 import com.pnt2005.bank.exception.ResourceNotFoundException;
@@ -32,6 +33,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @LogExecutionTime
     public List<AccountResponseDTO> getAccounts(Map<String, String> params) {
         List<AccountResponseDTO> accountResponseDTOList = new ArrayList<>();
         List<AccountEntity> accountEntityList;

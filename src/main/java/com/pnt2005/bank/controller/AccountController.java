@@ -25,7 +25,7 @@ public class AccountController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AccountResponseDTO>> getAccounts(Map<String, String> params) {
+    public ResponseEntity<List<AccountResponseDTO>> getAccounts(@RequestParam Map<String, String> params) {
         List<AccountResponseDTO> accountResponseDTOList = accountService.getAccounts(params);
         if (accountResponseDTOList.isEmpty()) {
             return ResponseEntity.noContent().build();
