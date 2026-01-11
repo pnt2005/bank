@@ -6,9 +6,10 @@ import com.pnt2005.bank.model.entity.AccountEntity;
 import com.pnt2005.bank.model.entity.UserEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
-    List<UserResponseDTO> getUsers();
+    List<UserResponseDTO> getUsers(Map<String, String> params);
 
     UserResponseDTO getUserById(Long id);
 

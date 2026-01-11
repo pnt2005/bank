@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -20,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getUsers() {
-        List<UserResponseDTO> userResponseDTOList = userService.getUsers();
+    public ResponseEntity<List<UserResponseDTO>> getUsers(@RequestParam Map<String, String> params) {
+        List<UserResponseDTO> userResponseDTOList = userService.getUsers(params);
         if (userResponseDTOList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

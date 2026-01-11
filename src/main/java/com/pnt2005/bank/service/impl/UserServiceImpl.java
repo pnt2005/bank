@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,9 +29,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDTO> getUsers() {
+    public List<UserResponseDTO> getUsers(Map<String, String> params) {
         List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
-        List<UserEntity> userEntityList = userRepository.findAll();
+        List<UserEntity> userEntityList;
+        if (params.containsKey("username")) {
+            userEntityList = userRepository.findAllByUsername(params.get("username").toLowerCase());
+        }
+        else {
+            userEntityList = userRepository.findAll();
+        }
         for (UserEntity userEntity : userEntityList) {
             userResponseDTOList.add(userConverter.toUserDTO(userEntity));
         }
