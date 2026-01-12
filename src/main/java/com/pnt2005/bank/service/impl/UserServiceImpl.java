@@ -1,4 +1,5 @@
 package com.pnt2005.bank.service.impl;
+import com.pnt2005.bank.annotation.LogExecutionTime;
 import com.pnt2005.bank.converter.UserConverter;
 import com.pnt2005.bank.enums.UserRole;
 import com.pnt2005.bank.exception.ResourceNotFoundException;
@@ -29,11 +30,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @LogExecutionTime
     public List<UserResponseDTO> getUsers(Map<String, String> params) {
         List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
         List<UserEntity> userEntityList;
         if (params.containsKey("username")) {
-            userEntityList = userRepository.findAllByUsername(params.get("username").toLowerCase());
+            userResponseDTOList = userRepository.findAllByUsernameStartingWith(params.get("username").toLowerCase());
+            return userResponseDTOList;
         }
         else {
             userEntityList = userRepository.findAll();
