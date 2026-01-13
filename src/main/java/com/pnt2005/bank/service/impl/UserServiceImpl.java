@@ -9,10 +9,11 @@ import com.pnt2005.bank.model.entity.AccountEntity;
 import com.pnt2005.bank.model.entity.UserEntity;
 import com.pnt2005.bank.repository.UserRepository;
 import com.pnt2005.bank.service.UserService;
+import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Map;
 
 @Service
@@ -31,20 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @LogExecutionTime
-    public List<UserResponseDTO> getUsers(Map<String, String> params) {
-        List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
-        List<UserEntity> userEntityList;
-        if (params.containsKey("username")) {
-            userResponseDTOList = userRepository.findAllByUsernameStartingWith(params.get("username").toLowerCase());
-            return userResponseDTOList;
-        }
-        else {
-            userEntityList = userRepository.findAll();
-        }
-        for (UserEntity userEntity : userEntityList) {
-            userResponseDTOList.add(userConverter.toUserDTO(userEntity));
-        }
-        return userResponseDTOList;
+    public Slice<UserResponseDTO> getUsers(Map<String, String> params) {
+        Pageable pageable = PageRequest.of(Integer.parseInt(params.get("pageNumber")), 20, Sort.by("username"));
+        return userRepository.findAllByUsername(params.get("username"), pageable);
     }
 
     @Override
@@ -54,6 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @LogExecutionTime
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
         UserEntity userEntity = userConverter.toUserEntity(userRequestDTO);
         userEntity.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));

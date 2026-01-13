@@ -4,6 +4,8 @@ import com.pnt2005.bank.model.dto.user.UserRequestDTO;
 import com.pnt2005.bank.model.dto.user.UserResponseDTO;
 import com.pnt2005.bank.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +23,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getUsers(@RequestParam Map<String, String> params) {
-        List<UserResponseDTO> userResponseDTOList = userService.getUsers(params);
+    public ResponseEntity<Slice<UserResponseDTO>> getUsers(@RequestParam Map<String, String> params) {
+        Slice<UserResponseDTO> userResponseDTOList = userService.getUsers(params);
         if (userResponseDTOList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
