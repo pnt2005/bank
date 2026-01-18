@@ -12,20 +12,31 @@ import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByUsername(String username);
 
     @LogExecutionTime
     @Query(value = """
-            select new com.pnt2005.bank.model.dto.user.UserResponseDTO(u.id, u.username)
-            from UserEntity u
-            where u.username like concat(:username, '%')
-            order by u.username
-            """
+            select main.id, main.username, main.email
+            from (
+                select u.id
+                from users u
+                where u.username like concat(:username, '%')
+                order by u.username
+                limit :limit offset :offset
+            )
+            as temp
+            inner join users as main
+            on temp.id = main.id
+            """,
+            nativeQuery = true
     )
-    Slice<UserResponseDTO> findAllByUsername(
+    List<Object[]> findAllByUsername(
             @Param("username") String username,
-            Pageable pageable
+            @Param("limit") int limit,
+            @Param("offset") long offset
     );
 }

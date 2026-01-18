@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -33,8 +34,17 @@ public class UserServiceImpl implements UserService {
     @Override
     @LogExecutionTime
     public Slice<UserResponseDTO> getUsers(Map<String, String> params) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(params.get("pageNumber")), 20, Sort.by("username"));
-        return userRepository.findAllByUsername(params.get("username"), pageable);
+        Pageable pageable = PageRequest.of(Integer.parseInt(params.get("pageNumber")), 20);
+        List<Object[]> rows = userRepository.findAllByUsername(params.get("username"), pageable.getPageSize(), pageable.getOffset());
+        List<UserResponseDTO> content = rows.stream()
+                .map(r -> new UserResponseDTO(
+                        (Long)r[0],
+                        (String)r[1],
+                        (String)r[2]
+                ))
+                .toList();
+        boolean hasNext = content.size() == pageable.getPageSize();
+        return new SliceImpl<>(content, pageable, hasNext);
     }
 
     @Override
