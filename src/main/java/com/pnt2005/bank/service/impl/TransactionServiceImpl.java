@@ -11,12 +11,16 @@ import com.pnt2005.bank.model.entity.TransactionEntity;
 import com.pnt2005.bank.repository.AccountRepository;
 import com.pnt2005.bank.repository.TransactionRepository;
 import com.pnt2005.bank.service.TransactionService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -33,21 +37,25 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionResponseDTO> getTransactions() {
-        List<TransactionResponseDTO> transactionResponseDTOList = new ArrayList<>();
-        List<TransactionEntity> transactionEntityList = transactionRepository.findAll();
-        for (TransactionEntity transactionEntity : transactionEntityList) {
-            transactionResponseDTOList.add(transactionConverter.toTransactionDTO(transactionEntity));
-        }
-        return transactionResponseDTOList;
+    public Slice<TransactionResponseDTO> getTransactions(Map<String, String> params) {
+        Pageable pageable = PageRequest.of(Integer.parseInt(params.get("pageNumber")), 20);
+        LocalDateTime from = params.get("from") != null ? LocalDateTime.parse(params.get("from")) : null;
+        LocalDateTime to = params.get("to") != null ? LocalDateTime.parse(params.get("to")) : null;
+        return transactionRepository.findAllByUserName(
+                params.get("username"),
+                from,
+                to,
+                pageable
+        );
     }
 
     @Override
     @Transactional
-    public TransactionResponseDTO createTransaction(TransactionRequestDTO transactionRequestDTO) {
+    public TransactionResponseDTO createTransaction(TransactionRequestDTO transactionRequestDTO) throws InterruptedException {
         //get fromAccount and toAccount
         AccountEntity fromAccountEntity = accountRepository.findByIdForUpdate(transactionRequestDTO.getFromAccountId());
         AccountEntity toAccountEntity = accountRepository.findByIdForUpdate(transactionRequestDTO.getToAccountId());
+        Thread.sleep(2000);
         //validate
         if (!fromAccountEntity.getStatus().equals(AccountStatus.ACTIVE)) {
             throw new TransactionException("from account is not active");

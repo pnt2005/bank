@@ -12,6 +12,18 @@ public class TransactionResponseDTO {
     private LocalDateTime created_at;
     private TransactionStatus transactionStatus;
 
+    public TransactionResponseDTO() {
+    }
+
+    public TransactionResponseDTO(Long id, Long fromAccountId, Long toAccountId, BigDecimal amount, LocalDateTime created_at, TransactionStatus transactionStatus) {
+        this.id = id;
+        this.fromAccountId = fromAccountId;
+        this.toAccountId = toAccountId;
+        this.amount = amount;
+        this.created_at = created_at;
+        this.transactionStatus = transactionStatus;
+    }
+
     public Long getId() {
         return id;
     }
