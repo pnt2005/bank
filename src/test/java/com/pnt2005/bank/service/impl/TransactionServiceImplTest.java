@@ -51,7 +51,7 @@ class TransactionServiceImplTest {
     }
 
     @Test
-    void createTransaction_success() {
+    void createTransaction_success() throws InterruptedException {
         //given
         fromAccount.setBalance(new BigDecimal(100));
         toAccount.setBalance(new BigDecimal(200));
